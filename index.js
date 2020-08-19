@@ -40,11 +40,11 @@ bot.onText(/\/marketcap/, (msg, match) => {
   const chatId = msg.chat.id;
   const message = `*Current GRAPH marketcap* 
    ${
-    cachedInfo.supply_without_decimals
-  } GRAPH \\* $${cachedInfo.GRAPH_price_USD.toFixed(
-    2
-  )}  = $${cachedInfo.market_cap.toFixed(2)}`;
-
+     cachedInfo.supply_without_decimals
+   } GRAPH \\* $${cachedInfo.GRAPH_price_USD.toFixed(2)}  = $${
+    cachedInfo.market_cap
+  }`;
+  console.log(cachedInfo);
   // send back the matched "whatever" to the chat
   bot.sendMessage(chatId, message, { parse_mode: "Markdown" });
 });
