@@ -100,7 +100,7 @@ bot.onText(/\/setSticky/, async (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
-  const chatId = msg.from.id; //1332810714
+  const chatId = msg.chat.id; //1332810714
   if (msg.from.id !== 1332810714) return;
   // send back the matched "whatever" to the chat
   const message = await bot.sendMessage(chatId, sticky(timeLeft), {
@@ -108,10 +108,6 @@ bot.onText(/\/setSticky/, async (msg, match) => {
   });
   stickyMessageId = message.message_id;
   stickyChatId = message.chat.id;
-  console.log(message);
-  console.log(stickyChatId);
-
-  console.log(stickyMessageId);
 });
 
 bot.onText(/\/marketcap/, (msg, match) => {
