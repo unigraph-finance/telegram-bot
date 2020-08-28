@@ -22,17 +22,24 @@ const hour = 60 * minute;
 setInterval(getCurrentInfo, pollingTimeout * 1000);
 getCurrentInfo();
 // Matches "/echo [whatever]"
-bot.onText(/\/price/, (msg, match) => {
+bot.onText(/\/price/, async (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
   const chatId = msg.chat.id;
-  console.log(cachedInfo);
-
+  console.log(chatId);
+  // const messageId = msg.message_id;
   // send back the matched "whatever" to the chat
-  bot.sendMessage(
+
+  // bot.deleteMessage({ chatId, messageId: `${messageId}` });
+  bot.deleteMessage(msg.chat.id, msg.message_id);
+  const newMessage = await bot.sendMessage(
     chatId,
     `Current GRAPH price : $${cachedInfo.GRAPH_price_USD.toFixed(2)}`
+  );
+  setTimeout(
+    () => bot.deleteMessage(newMessage.chat.id, newMessage.message_id),
+    30000
   );
 });
 const timeOfRebase = 1598148000000;
@@ -110,11 +117,12 @@ bot.onText(/\/setSticky/, async (msg, match) => {
   stickyChatId = message.chat.id;
 });
 
-bot.onText(/\/marketcap/, (msg, match) => {
+bot.onText(/\/marketcap/, async (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
   const chatId = msg.chat.id;
+
   const message = `*Current GRAPH marketcap* 
    ${
      cachedInfo.supply_without_decimals
@@ -123,7 +131,15 @@ bot.onText(/\/marketcap/, (msg, match) => {
   }`;
   console.log(cachedInfo);
   // send back the matched "whatever" to the chat
-  bot.sendMessage(chatId, message, { parse_mode: "Markdown" });
+  bot.deleteMessage(msg.chat.id, msg.message_id);
+  const newMessage = await bot.sendMessage(chatId, message, {
+    parse_mode: "Markdown",
+  });
+
+  setTimeout(
+    () => bot.deleteMessage(newMessage.chat.id, newMessage.message_id),
+    30000
+  );
 });
 
 // Listen for any kind of message. There are different kinds of
